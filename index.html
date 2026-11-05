@@ -207,6 +207,9 @@
   .sh-grid button.on { background: #fff; color: #000; }
   .sh-grid small { display: block; font-size: 12px; opacity: .65; }
   .faded { opacity: 0 !important; pointer-events: none !important; }
+  /* Iconos que giran con el móvil (cuando la pantalla está bloqueada en vertical) */
+  #topbar .tb, #zoomPills button, #galBtn, #switchCam, #hideBtn, #count {
+    transition: transform .3s ease, width .15s, height .15s; transform: rotate(var(--rot, 0deg)); }
   #info { position: absolute; inset: 0; z-index: 8; background: #0f1117; overflow-y: auto; }
   #info.hidden { display: none !important; }
   .info-card { padding: calc(14px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; }
@@ -353,7 +356,7 @@
 <circle cx="88" cy="82" r="5" fill="#1b2a4a"/>
 <circle cx="112" cy="82" r="5" fill="#e9eef7"/>
 <path d="M86 102 Q100 112 100 112" stroke="#1b2a4a" stroke-width="3" fill="none" stroke-linecap="round"/>
-<path d="M100 112 Q114 102 114 102" stroke="#e9eef7" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg><div><b>Reflejo</b><span>Versión 10 · noviembre 2026</span></div></div>
+<path d="M100 112 Q114 102 114 102" stroke="#e9eef7" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg><div><b>Reflejo</b><span>Versión 11 · noviembre 2026</span></div></div>
         <h3>Cómo se usa</h3>
         <ul class="info-list">
           <li><b>Tocar la imagen</b><span>Enfoca y mide la luz en ese punto</span></li>
@@ -749,6 +752,34 @@
     if (justPinched) setTimeout(() => { justPinched = false; }, 350);
   });
 
+
+  // ---- Girar iconos y fotos según la posición del móvil ----
+  // Si la pantalla no gira (APK o app bloqueada en vertical), los iconos giran como en la cámara del móvil.
+  var devRot = 0;
+  function screenIsPortrait() {
+    const t = screen.orientation && screen.orientation.type;
+    return t ? t.startsWith('portrait') : window.innerHeight >= window.innerWidth;
+  }
+  window.addEventListener('devicemotion', ev => {
+    const g = ev.accelerationIncludingGravity;
+    if (!g || g.x == null) return;
+    let r = devRot;
+    if (!screenIsPortrait()) r = 0;
+    else if (Math.abs(g.x) > 6.5 && Math.abs(g.x) > Math.abs(g.y) + 2) r = g.x > 0 ? 90 : -90;
+    else if (Math.abs(g.y) > 6.5 && Math.abs(g.y) > Math.abs(g.x) + 2) r = 0;
+    if (r !== devRot) { devRot = r; stage.style.setProperty('--rot', r + 'deg'); }
+  });
+  function rotateCanvas(c, deg) {
+    if (!deg) return c;
+    const o = document.createElement('canvas');
+    o.width = c.height; o.height = c.width;
+    const x = o.getContext('2d');
+    x.translate(o.width / 2, o.height / 2);
+    x.rotate(deg * Math.PI / 180);
+    x.drawImage(c, -c.width / 2, -c.height / 2);
+    return o;
+  }
+
   // ---- Hoja de ajustes (⋯) ----
   $('moreBtn').addEventListener('click', e => { e.stopPropagation(); $('sheet').classList.remove('hidden'); });
   $('sheetClose').addEventListener('click', e => { e.stopPropagation(); $('sheet').classList.add('hidden'); });
@@ -915,7 +946,8 @@
       await wait(1000);
     }
     $('count').classList.add('hidden');
-    const c = await grab();
+    const c0 = await grab();
+    const c = c0 && devRot ? rotateCanvas(c0, -devRot) : c0;
     const fl = $('flash');
     fl.style.transition = 'none'; fl.style.opacity = '1';
     requestAnimationFrame(() => { fl.style.transition = 'opacity .35s'; fl.style.opacity = '0'; });
