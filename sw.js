@@ -1,4 +1,4 @@
-const CACHE = 'reflejo-v11';
+const CACHE = 'reflejo-v12';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png'];
 
 self.addEventListener('install', e => {

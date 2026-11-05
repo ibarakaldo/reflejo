@@ -207,6 +207,19 @@
   .sh-grid button.on { background: #fff; color: #000; }
   .sh-grid small { display: block; font-size: 12px; opacity: .65; }
   .faded { opacity: 0 !important; pointer-events: none !important; }
+  /* Paneles girados cuando el móvil está en horizontal y la pantalla no gira */
+  #stage.rot90 #preview, #stage.rot90 #gallery, #stage.rot90 #info,
+  #stage.rot-90 #preview, #stage.rot-90 #gallery, #stage.rot-90 #info {
+    inset: auto; left: 50%; top: 50%; width: 100vh; height: 100vw; }
+  #stage.rot90 #preview, #stage.rot90 #gallery, #stage.rot90 #info { transform: translate(-50%, -50%) rotate(90deg); }
+  #stage.rot-90 #preview, #stage.rot-90 #gallery, #stage.rot-90 #info { transform: translate(-50%, -50%) rotate(-90deg); }
+  #stage.rot90 .sheet-card, #stage.rot-90 .sheet-card {
+    position: absolute; left: 50%; top: 50%; width: min(100vh, 720px); max-height: calc(100vw - 24px); overflow-y: auto;
+    border-radius: 22px; animation: none; padding-bottom: 16px; }
+  #stage.rot90 .sheet-card { transform: translate(-50%, -50%) rotate(90deg); }
+  #stage.rot-90 .sheet-card { transform: translate(-50%, -50%) rotate(-90deg); }
+  #stage.rot90 .sh-grid, #stage.rot-90 .sh-grid { grid-template-columns: repeat(3, 1fr); }
+  #stage.rot90 .vhead, #stage.rot-90 .vhead, #stage.rot90 .info-card, #stage.rot-90 .info-card { padding-top: 10px; }
   /* Iconos que giran con el móvil (cuando la pantalla está bloqueada en vertical) */
   #topbar .tb, #zoomPills button, #galBtn, #switchCam, #hideBtn, #count {
     transition: transform .3s ease, width .15s, height .15s; transform: rotate(var(--rot, 0deg)); }
@@ -356,7 +369,7 @@
 <circle cx="88" cy="82" r="5" fill="#1b2a4a"/>
 <circle cx="112" cy="82" r="5" fill="#e9eef7"/>
 <path d="M86 102 Q100 112 100 112" stroke="#1b2a4a" stroke-width="3" fill="none" stroke-linecap="round"/>
-<path d="M100 112 Q114 102 114 102" stroke="#e9eef7" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg><div><b>Reflejo</b><span>Versión 11 · noviembre 2026</span></div></div>
+<path d="M100 112 Q114 102 114 102" stroke="#e9eef7" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg><div><b>Reflejo</b><span>Versión 12 · noviembre 2026</span></div></div>
         <h3>Cómo se usa</h3>
         <ul class="info-list">
           <li><b>Tocar la imagen</b><span>Enfoca y mide la luz en ese punto</span></li>
@@ -767,7 +780,10 @@
     if (!screenIsPortrait()) r = 0;
     else if (Math.abs(g.x) > 6.5 && Math.abs(g.x) > Math.abs(g.y) + 2) r = g.x > 0 ? 90 : -90;
     else if (Math.abs(g.y) > 6.5 && Math.abs(g.y) > Math.abs(g.x) + 2) r = 0;
-    if (r !== devRot) { devRot = r; stage.style.setProperty('--rot', r + 'deg'); }
+    if (r !== devRot) {
+      devRot = r; stage.style.setProperty('--rot', r + 'deg');
+      stage.classList.toggle('rot90', r === 90); stage.classList.toggle('rot-90', r === -90);
+    }
   });
   function rotateCanvas(c, deg) {
     if (!deg) return c;
@@ -1081,7 +1097,8 @@
   $('shot').addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
   $('shot').addEventListener('touchend', e => {
     if (tx == null) return;
-    const dx = e.changedTouches[0].clientX - tx; tx = null;
+    let dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (devRot) dx = 0; // girado: usar las flechas
     if (dx > 50) $('vPrev').click(); else if (dx < -50) $('vNext').click();
   });
   $('vAll').addEventListener('click', openGallery);
