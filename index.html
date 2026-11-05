@@ -207,6 +207,9 @@
   .sh-grid button.on { background: #fff; color: #000; }
   .sh-grid small { display: block; font-size: 12px; opacity: .65; }
   .faded { opacity: 0 !important; pointer-events: none !important; }
+  #toast { position: absolute; left: 50%; top: 42%; z-index: 6; background: rgba(0,0,0,.72); color: #fff; font-size: 15px;
+    font-weight: 600; padding: 10px 18px; border-radius: 999px; pointer-events: none; white-space: nowrap;
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg)); transition: opacity .3s; }
   /* Paneles girados cuando el móvil está en horizontal y la pantalla no gira */
   #stage.rot90 #preview, #stage.rot90 #gallery, #stage.rot90 #info,
   #stage.rot-90 #preview, #stage.rot-90 #gallery, #stage.rot-90 #info {
@@ -304,6 +307,7 @@
     <div id="focusBox"></div>
     <div id="count" class="hidden"></div>
     <div id="flash"></div>
+    <div id="toast" class="hidden"></div>
     <div id="mask"></div>
 
     <div id="topbar" class="hidden">
@@ -354,6 +358,9 @@
           <button id="flip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18"/><path d="M8 7L3 12l5 5V7z"/><path d="M16 7l5 5-5 5V7z"/></svg><span id="flipLbl">Espejo</span></button>
           <button id="hideAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg><span>Ocultar controles</span></button>
           <button id="fullTop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>Pantalla completa</span></button>
+          <button id="autoSaveBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span>Guardar al disparar<small id="autoSaveLbl">No</small></span></button>
+          <button id="soundBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><span>Sonido<small id="soundLbl">Sí</small></span></button>
+          <button id="vibBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="8" y="4" width="8" height="16" rx="2"/><path d="M4 8v8M20 8v8M1.5 10v4M22.5 10v4"/></svg><span>Vibración<small id="vibLbl">Sí</small></span></button>
           <button id="infoBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg><span>Información<small>Ayuda y versión</small></span></button>
         </div>
       </div>
@@ -369,7 +376,7 @@
 <circle cx="88" cy="82" r="5" fill="#1b2a4a"/>
 <circle cx="112" cy="82" r="5" fill="#e9eef7"/>
 <path d="M86 102 Q100 112 100 112" stroke="#1b2a4a" stroke-width="3" fill="none" stroke-linecap="round"/>
-<path d="M100 112 Q114 102 114 102" stroke="#e9eef7" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg><div><b>Reflejo</b><span>Versión 12 · noviembre 2026</span></div></div>
+<path d="M100 112 Q114 102 114 102" stroke="#e9eef7" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg><div><b>Reflejo</b><span>Versión 13 · noviembre 2026</span></div></div>
         <h3>Cómo se usa</h3>
         <ul class="info-list">
           <li><b>Tocar la imagen</b><span>Enfoca y mide la luz en ese punto</span></li>
@@ -380,6 +387,7 @@
           <li><b>Cuadrícula</b><span>Líneas de tercios y nivel de horizonte</span></li>
           <li><b>⋯ Ajustes</b><span>Exposición, temporizador, congelar, espejo…</span></li>
           <li><b>Miniatura</b><span>Galería de la sesión; ahí eliges el marco</span></li>
+          <li><b>Botones de volumen</b><span>Disparan la foto (si el navegador lo permite) o un mando Bluetooth</span></li>
           <li><b>⟳ Abajo a la derecha</b><span>Cambiar entre cámara frontal y trasera</span></li>
         </ul>
         <h3>Privacidad</h3>
@@ -796,6 +804,66 @@
     return o;
   }
 
+
+  // ---- Opciones: guardar al disparar, sonido, vibración ----
+  const opt = {
+    autoSave: store.get('autoSave', '0') === '1',
+    sound: store.get('sound', '1') === '1',
+    vib: store.get('vib', '1') === '1'
+  };
+  function paintOpts() {
+    [['autoSave', 'autoSaveBtn', 'autoSaveLbl'], ['sound', 'soundBtn', 'soundLbl'], ['vib', 'vibBtn', 'vibLbl']].forEach(([k, b, l]) => {
+      $(b).classList.toggle('on', opt[k]); $(l).textContent = opt[k] ? 'Sí' : 'No';
+    });
+  }
+  [['autoSave', 'autoSaveBtn'], ['sound', 'soundBtn'], ['vib', 'vibBtn']].forEach(([k, b]) => {
+    $(b).addEventListener('click', e => {
+      e.stopPropagation(); opt[k] = !opt[k]; store.set(k, opt[k] ? '1' : '0'); paintOpts();
+      if (k === 'sound' && opt.sound) shutterSound();
+      if (k === 'vib' && opt.vib) buzz();
+    });
+  });
+  paintOpts();
+
+  let toastT = null;
+  function toast(msg) {
+    const t = $('toast'); t.textContent = msg; t.classList.remove('hidden'); t.style.opacity = '1';
+    clearTimeout(toastT); toastT = setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.classList.add('hidden'), 300); }, 1300);
+  }
+
+  // Sonido de obturador generado (sin archivos)
+  let actx = null;
+  function audioCtx() {
+    try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (_) { actx = null; }
+    return actx;
+  }
+  function shutterSound() {
+    const ac = audioCtx(); if (!ac) return;
+    const click = (t0, vol) => {
+      const len = Math.floor(ac.sampleRate * 0.05);
+      const buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 4);
+      const src = ac.createBufferSource(); src.buffer = buf;
+      const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 2400; f.Q.value = 0.8;
+      const g = ac.createGain(); g.gain.value = vol;
+      src.connect(f); f.connect(g); g.connect(ac.destination); src.start(ac.currentTime + t0);
+    };
+    click(0, 0.9); click(0.07, 0.6);
+  }
+  function buzz() { try { navigator.vibrate && navigator.vibrate(35); } catch (_) {} }
+  $('go').addEventListener('click', audioCtx);
+
+  // Disparar con los botones de volumen, un mando Bluetooth o el teclado
+  const SHOOT_KEYS = ['AudioVolumeUp', 'AudioVolumeDown', 'VolumeUp', 'VolumeDown', 'Enter', ' ', 'Camera'];
+  window.addEventListener('keydown', e => {
+    if (!SHOOT_KEYS.includes(e.key) && ![24, 25, 27].includes(e.keyCode)) return;
+    if ($('start').classList.contains('hidden') && $('preview').classList.contains('hidden') &&
+        $('sheet').classList.contains('hidden') && $('gallery').classList.contains('hidden') && $('info').classList.contains('hidden')) {
+      e.preventDefault();
+      if (!e.repeat) $('shoot').click();
+    }
+  });
+
   // ---- Hoja de ajustes (⋯) ----
   $('moreBtn').addEventListener('click', e => { e.stopPropagation(); $('sheet').classList.remove('hidden'); });
   $('sheetClose').addEventListener('click', e => { e.stopPropagation(); $('sheet').classList.add('hidden'); });
@@ -967,6 +1035,7 @@
     const fl = $('flash');
     fl.style.transition = 'none'; fl.style.opacity = '1';
     requestAnimationFrame(() => { fl.style.transition = 'opacity .35s'; fl.style.opacity = '0'; });
+    if (c) { if (opt.sound) shutterSound(); if (opt.vib) buzz(); }
     if (!c) { busy = false; return; }
     const meta = {
       date: new Date(), facing,
@@ -974,9 +1043,15 @@
       ev: parseFloat($('ev').value), filter: store.get('filter', 'natural'), ratio: ratio.name
     };
     c.toBlob(b => {
-      shots.push({ blob: b, url: URL.createObjectURL(b), meta, saved: false, framed: {} });
+      const shot = { blob: b, url: URL.createObjectURL(b), meta, saved: false, framed: {} };
+      shots.push(shot);
       updateGalBtn();
-      setTimeout(() => { openViewer(shots.length - 1); busy = false; }, 250);
+      if (opt.autoSave) {
+        try { download(b, fileName(shot, false)); shot.saved = true; toast('Foto guardada'); } catch (_) { toast('No se pudo guardar'); }
+        busy = false;
+      } else {
+        setTimeout(() => { openViewer(shots.length - 1); busy = false; }, 250);
+      }
     }, 'image/jpeg', 0.93);
   });
 
