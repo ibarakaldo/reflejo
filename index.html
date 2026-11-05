@@ -150,6 +150,65 @@
   #hint { position: absolute; top: calc(66px + env(safe-area-inset-top)); left: 50%;
     transform: translateX(-50%); background: rgba(0,0,0,.5); padding: 8px 14px; border-radius: 999px;
     font-size: 13px; color: #eee; transition: opacity .6s; pointer-events: none; white-space: nowrap; }
+
+  /* ===== Interfaz estilo cámara ===== */
+  #frame { touch-action: none; }
+  .chips { touch-action: pan-x; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .tb { width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(0,0,0,.28); color: #fff;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; padding: 0; }
+  .tb svg { width: 22px; height: 22px; }
+  .tb.on { background: #fff; color: #000; }
+  .tb.pill { width: auto; min-width: 44px; height: 32px; border-radius: 999px; padding: 0 12px; font-size: 13px; font-weight: 700;
+    border: 1.5px solid rgba(255,255,255,.7); background: rgba(0,0,0,.28); }
+  #topbar { position: absolute; left: 0; right: 0; top: 0; z-index: 4; display: flex; align-items: center; justify-content: space-between;
+    padding: calc(10px + env(safe-area-inset-top)) 16px 10px; background: linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,0));
+    transition: opacity .3s; }
+  #topbar .badge { top: 0; right: -2px; }
+  #hideBtn { position: absolute; right: 14px; top: calc(12px + env(safe-area-inset-top)); z-index: 4; }
+  #hint { top: calc(66px + env(safe-area-inset-top)); }
+  #ui { gap: 12px; padding-bottom: calc(22px + env(safe-area-inset-bottom)); background: linear-gradient(to top, rgba(0,0,0,.7) 55%, rgba(0,0,0,0)); }
+  #zoomPills { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 42px; }
+  #zoomPills button { width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(0,0,0,.5); color: #fff;
+    font-size: 12px; font-weight: 600; cursor: pointer; padding: 0; transition: all .15s; font-family: inherit; }
+  #zoomPills button.on { width: 42px; height: 42px; color: #ffd400; font-size: 13px; background: rgba(0,0,0,.65); }
+  #panel { display: flex; flex-direction: column; gap: 8px; }
+  #panel .chips { justify-content: safe center; }
+  .chip-note { font-size: 13px; color: #bbb; padding: 8px 4px; }
+  #modes { display: flex; justify-content: center; gap: 26px; }
+  #modes button { background: none; border: 0; color: rgba(255,255,255,.65); font-size: 14px; font-weight: 600; letter-spacing: .3px;
+    padding: 6px 2px; cursor: pointer; font-family: inherit; }
+  #modes button.on { color: #ffd400; }
+  #ui .row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0; padding: 0 22px; }
+  #galBtn { position: relative; left: auto; top: auto; justify-self: start; width: 52px; height: 52px; border-radius: 12px;
+    border: 2px solid #fff; padding: 0; background: #222; cursor: pointer; overflow: visible; z-index: auto; }
+  #galBtn.empty { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.35); }
+  #galBtn.empty img { display: none; }
+  #galCount { top: -7px; right: -7px; }
+  #switchCam { position: relative; left: auto; top: auto; justify-self: end; width: 52px; height: 52px; padding: 0; border-radius: 50%;
+    border: 0; background: rgba(255,255,255,.18); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  #switchCam svg { width: 26px; height: 26px; }
+  .shutter { width: 78px; height: 78px; }
+  #sheet { position: absolute; inset: 0; z-index: 7; background: rgba(0,0,0,.35); display: flex; align-items: flex-end; }
+  #sheet.hidden { display: none !important; }
+  .sheet-card { width: 100%; background: #16181f; border-radius: 22px 22px 0 0; padding: 14px 16px calc(20px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; gap: 14px; animation: up .22s ease; }
+  @keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .sh-head { display: flex; justify-content: space-between; align-items: center; font-size: 17px; font-weight: 600; }
+  .sh-head .tb { width: 36px; height: 36px; background: rgba(255,255,255,.1); }
+  .sh-row { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .sh-row input { flex: 1; accent-color: #ffd400; }
+  .sh-lbl { width: 84px; color: #ccc; }
+  .sh-mini { font-size: 12px; color: #999; }
+  .sh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .sh-grid button { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.08); border: 0; color: #fff;
+    border-radius: 14px; padding: 12px; font-size: 14px; text-align: left; cursor: pointer; font-family: inherit; }
+  .sh-grid button svg { width: 22px; height: 22px; flex: none; }
+  .sh-grid button.on { background: #fff; color: #000; }
+  .sh-grid small { display: block; font-size: 12px; opacity: .65; }
+  .faded { opacity: 0 !important; pointer-events: none !important; }
+  #topbar #gridBtn, #topbar #ratioBtn, #topbar #light, #topbar #moreBtn { position: relative; top: auto; right: auto; left: auto; }
+  .sh-grid #fullTop { position: static; top: auto; right: auto; width: auto; height: auto; z-index: auto; }
 </style>
 </head>
 <body>
@@ -177,54 +236,6 @@
 
     <div id="hint" class="hidden">Toca la imagen para enfocar</div>
 
-    <div id="ui" class="hidden">
-      <div class="chips hidden" id="lightColors" aria-label="Color de la luz"></div>
-      <div class="chips hidden" id="lenses" aria-label="Lentes traseras"></div>
-      <div class="chips" id="filters" aria-label="Filtros"></div>
-      <div class="zoom">
-        <span id="zMin">1x</span>
-        <input type="range" id="zoom" min="1" max="3" step="0.01" value="1" aria-label="Zoom">
-        <span id="zMax">3x</span>
-      </div>
-      <div class="ev">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
-        <input type="range" id="ev" min="-2" max="2" step="0.1" value="0" aria-label="Exposición">
-        <span id="evVal">0.0</span>
-      </div>
-      <div class="row">
-        <div class="item">
-          <button class="ctl" id="light" aria-label="Luz">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-          </button>
-          <div class="label">Luz</div>
-        </div>
-        <div class="item">
-          <button class="ctl" id="freeze" aria-label="Congelar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-          </button>
-          <div class="label" id="freezeLbl">Congelar</div>
-        </div>
-        <button class="shutter" id="shoot" aria-label="Sacar foto"><span></span></button>
-        <div class="item">
-          <button class="ctl" id="flip" aria-label="Modo espejo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18"/><path d="M8 7L3 12l5 5V7z"/><path d="M16 7l5 5-5 5V7z"/></svg>
-          </button>
-          <div class="label" id="flipLbl">Espejo</div>
-        </div>
-        <div class="item">
-          <button class="ctl" id="timer" aria-label="Temporizador">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
-          </button>
-          <span class="badge hidden" id="timerBadge"></span>
-          <div class="label">Tempor.</div>
-        </div>
-      </div>
-    </div>
-
-    <button class="ctl hidden" id="switchCam" aria-label="Cambiar de cámara">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3l2-3h8l2 3h3v11H3z"/><path d="M9 13a3 3 0 0 1 5.2-2M15 13a3 3 0 0 1-5.2 2"/><path d="M14.5 9.5v1.7h-1.7M9.5 16.5v-1.7h1.7"/></svg>
-      <span id="switchLbl">Trasera</span>
-    </button>
     <div id="grid" class="hidden">
       <div class="gl" style="left:33.33%;top:0;bottom:0;width:1px"></div>
       <div class="gl" style="left:66.66%;top:0;bottom:0;width:1px"></div>
@@ -234,21 +245,61 @@
       <div id="levelDeg" class="hidden"></div>
     </div>
     <div id="focusBox"></div>
-    <button class="ctl hidden" id="hideBtn" aria-label="Ocultar controles">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg>
-    </button>
-    <button class="ctl hidden" id="gridBtn" aria-label="Cuadrícula y nivel">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
-    </button>
-    <button class="ctl hidden" id="fullTop" aria-label="Pantalla completa">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
-    </button>
     <div id="count" class="hidden"></div>
     <div id="flash"></div>
-
     <div id="mask"></div>
-    <button class="ctl hidden" id="ratioBtn" aria-label="Formato de foto">Completa</button>
-    <button class="hidden" id="galBtn" aria-label="Fotos de la sesión"><img id="galThumb" alt=""><span id="galCount">0</span></button>
+
+    <div id="topbar" class="hidden">
+      <button class="tb" id="light" aria-label="Luz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="tb pill" id="ratioBtn" aria-label="Formato de foto">Completa</button>
+      <button class="tb" id="gridBtn" aria-label="Cuadrícula y nivel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg></button>
+      <button class="tb" id="moreBtn" aria-label="Más ajustes"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span class="badge hidden" id="timerBadge"></span></button>
+    </div>
+    <button class="tb hidden" id="hideBtn" aria-label="Mostrar controles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+
+    <div id="ui" class="hidden">
+      <div id="zoomPills" aria-label="Zoom"></div>
+      <div id="panel">
+        <div class="chips hidden" id="lenses" aria-label="Lentes traseras"></div>
+        <div class="chips hidden" id="filters" aria-label="Filtros"></div>
+        <div class="chips hidden" id="lightLevels" aria-label="Intensidad de la luz"></div>
+        <div class="chips hidden" id="lightColors" aria-label="Color de la luz"></div>
+      </div>
+      <div id="modes">
+        <button data-mode="filtros">Filtros</button>
+        <button data-mode="foto" class="on">Foto</button>
+        <button data-mode="luz">Luz</button>
+      </div>
+      <div class="row">
+        <button class="empty" id="galBtn" aria-label="Fotos de la sesión"><img id="galThumb" alt=""><span id="galCount" class="hidden">0</span></button>
+        <button class="shutter" id="shoot" aria-label="Sacar foto"><span></span></button>
+        <button class="round" id="switchCam" aria-label="Cambiar de cámara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20v-4h-4"/></svg><span id="switchLbl" class="sr">Trasera</span></button>
+      </div>
+    </div>
+
+    <div id="sheet" class="hidden">
+      <div class="sheet-card">
+        <div class="sh-head"><span>Ajustes</span><button class="tb" id="sheetClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        <div class="sh-row">
+          <span class="sh-lbl">Exposición</span>
+          <input type="range" id="ev" min="-2" max="2" step="0.1" value="0" aria-label="Exposición">
+          <span id="evVal">0.0</span>
+        </div>
+        <div class="sh-row">
+          <span class="sh-lbl">Zoom</span>
+          <span id="zMin" class="sh-mini">1x</span>
+          <input type="range" id="zoom" min="1" max="3" step="0.01" value="1" aria-label="Zoom">
+          <span id="zMax" class="sh-mini">3x</span>
+        </div>
+        <div class="sh-grid">
+          <button id="timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span>Temporizador<small id="timerLbl">No</small></span></button>
+          <button id="freeze"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><span id="freezeLbl">Congelar</span></button>
+          <button id="flip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18"/><path d="M8 7L3 12l5 5V7z"/><path d="M16 7l5 5-5 5V7z"/></svg><span id="flipLbl">Espejo</span></button>
+          <button id="hideAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg><span>Ocultar controles</span></button>
+          <button id="fullTop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>Pantalla completa</span></button>
+        </div>
+      </div>
+    </div>
 
     <div id="preview" class="hidden">
       <div class="vhead">
@@ -364,12 +415,9 @@
   function showMirror() {
     $('start').classList.add('hidden');
     ui.classList.remove('hidden');
-    $('fullTop').classList.remove('hidden');
-    $('gridBtn').classList.remove('hidden');
-    $('ratioBtn').classList.remove('hidden');
+    $('topbar').classList.remove('hidden');
     setTimeout(layoutBox, 50);
-    $('hideBtn').classList.remove('hidden');
-    if (mode === 'photo') { $('freeze').parentElement.classList.add('hidden'); }
+    if (mode === 'photo') { $('freeze').classList.add('hidden'); $('switchCam').style.visibility = 'hidden'; }
     hint.textContent = (mode === 'live' && focusOk) ? 'Toca la imagen para enfocar' : 'Toca la imagen para ocultar los controles';
     hint.classList.remove('hidden');
     setTimeout(() => hint.style.opacity = '0', 3000);
@@ -441,13 +489,12 @@
     torchOk = facing === 'environment' && !!caps.torch;
     torchOn = false;
     // reinicia la luz al cambiar de cámara
-    lightLevel = 0;
-    stage.style.setProperty('--ring', '0px');
-    $('light').classList.remove('on');
-    $('lightColors').classList.add('hidden');
-    $('light').parentElement.querySelector('.label').textContent = facing === 'environment' ? 'Linterna' : 'Luz';
-    $('light').parentElement.style.visibility = (facing === 'environment' && !torchOk) ? 'hidden' : '';
+    setRing(0);
+    $('light').style.visibility = (facing === 'environment' && !torchOk) ? 'hidden' : '';
+    renderLightPanel();
+    setMode(uiMode);
     applyTransform();
+    buildZoomPills();
   }
 
   // ---- Lentes traseras ----
@@ -457,7 +504,7 @@
       const all = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
       const isFront = d => /front|user|frontal|delant|facetime/i.test(d.label);
       rearCams = all.filter(d => !isFront(d));
-      if (all.length < 2) $('switchCam').classList.add('hidden');
+      if (all.length < 2) $('switchCam').style.visibility = 'hidden';
       const box = $('lenses'); box.innerHTML = '';
       rearCams.forEach((d, i) => {
         let name = `Lente ${i + 1}`;
@@ -476,7 +523,7 @@
   }
   function markLens() {
     const id = track && track.getSettings ? track.getSettings().deviceId : null;
-    $('lenses').classList.toggle('hidden', facing !== 'environment' || rearCams.length < 2);
+    $('lenses').classList.toggle('hidden', facing !== 'environment' || rearCams.length < 2 || uiMode !== 'foto');
     document.querySelectorAll('#lenses .chip').forEach(c => c.classList.toggle('on', c.dataset.id === id));
   }
 
@@ -510,20 +557,131 @@
 
   // Luz: borde blanco que ilumina la cara (3 niveles)
   const ringSizes = ['0px', '6vmin', '11vmin', '16vmin'];
-  $('light').addEventListener('click', async e => {
+  $('light').addEventListener('click', e => {
     e.stopPropagation();
-    if (facing === 'environment') {
-      if (!torchOk) return;
-      torchOn = !torchOn;
-      try { await track.applyConstraints({ advanced: [{ torch: torchOn }] }); } catch (_) { torchOn = false; }
-      $('light').classList.toggle('on', torchOn);
-      return;
-    }
-    lightLevel = (lightLevel + 1) % ringSizes.length;
-    stage.style.setProperty('--ring', ringSizes[lightLevel]);
-    $('light').classList.toggle('on', lightLevel > 0);
-    $('lightColors').classList.toggle('hidden', lightLevel === 0);
+    if (facing === 'environment') { if (torchOk) setTorch(!torchOn); return; }
+    setRing((lightLevel + 1) % ringSizes.length);
   });
+
+  function setRing(n) {
+    lightLevel = n;
+    stage.style.setProperty('--ring', ringSizes[n]);
+    $('light').classList.toggle('on', n > 0);
+    markLightChips();
+    setTimeout(() => { try { layoutBox(); } catch (_) {} }, 300);
+  }
+  async function setTorch(on) {
+    torchOn = on;
+    try { await track.applyConstraints({ advanced: [{ torch: on }] }); } catch (_) { torchOn = false; }
+    $('light').classList.toggle('on', torchOn);
+    markLightChips();
+  }
+  const RING_NAMES = ['Apagada', 'Baja', 'Media', 'Alta'];
+  function renderLightPanel() {
+    const box = $('lightLevels'); box.innerHTML = '';
+    if (facing === 'environment') {
+      if (!torchOk) { box.innerHTML = '<span class="chip-note">Esta cámara no tiene linterna</span>'; return; }
+      [['Linterna apagada', false], ['Linterna encendida', true]].forEach(([name, v]) => {
+        const b = document.createElement('button');
+        b.className = 'chip'; b.dataset.v = v ? '1' : '0'; b.textContent = name;
+        b.addEventListener('click', ev => { ev.stopPropagation(); setTorch(v); });
+        box.appendChild(b);
+      });
+    } else {
+      RING_NAMES.forEach((name, i) => {
+        const b = document.createElement('button');
+        b.className = 'chip'; b.dataset.v = String(i); b.textContent = name;
+        b.addEventListener('click', ev => { ev.stopPropagation(); setRing(i); });
+        box.appendChild(b);
+      });
+    }
+    markLightChips();
+  }
+  function markLightChips() {
+    const cur = facing === 'environment' ? (torchOn ? '1' : '0') : String(lightLevel);
+    document.querySelectorAll('#lightLevels .chip').forEach(c => c.classList.toggle('on', c.dataset.v === cur));
+  }
+
+  // ---- Modos: Filtros · Foto · Luz ----
+  var uiMode = 'foto';
+  const MODES = ['filtros', 'foto', 'luz'];
+  function setMode(m) {
+    uiMode = m;
+    document.querySelectorAll('#modes button').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+    $('filters').classList.toggle('hidden', m !== 'filtros');
+    $('lightLevels').classList.toggle('hidden', m !== 'luz');
+    $('lightColors').classList.toggle('hidden', !(m === 'luz' && facing === 'user'));
+    markLens();
+  }
+  document.querySelectorAll('#modes button').forEach(b =>
+    b.addEventListener('click', e => { e.stopPropagation(); setMode(b.dataset.mode); }));
+  let mx = null;
+  $('ui').addEventListener('touchstart', e => { if (e.touches.length === 1 && !e.target.closest('.chips')) mx = e.touches[0].clientX; }, { passive: true });
+  $('ui').addEventListener('touchend', e => {
+    if (mx == null) return;
+    const dx = e.changedTouches[0].clientX - mx; mx = null;
+    if (Math.abs(dx) < 60) return;
+    const i = MODES.indexOf(uiMode) + (dx < 0 ? 1 : -1);
+    if (i >= 0 && i < MODES.length) setMode(MODES[i]);
+  });
+
+  // ---- Botones de zoom (0,6 · 1x · 2x · 3x) y pellizco ----
+  const fmtZ = v => (Math.round(v * 10) / 10).toString().replace('.', ',');
+  var zPresets = [1, 2, 3];
+  function buildZoomPills() {
+    if (hwZoom) {
+      const mn = +hwZoom.min, mxz = +hwZoom.max;
+      zPresets = [mn < 0.95 ? mn : null, 1, 2, 3, 5].filter(v => v != null && v >= mn - 1e-6 && v <= mxz + 1e-6);
+    } else zPresets = [1, 2, 3];
+    zPresets = [...new Set(zPresets.map(v => Math.round(v * 10) / 10))];
+    const box = $('zoomPills'); box.innerHTML = '';
+    zPresets.forEach(v => {
+      const b = document.createElement('button');
+      b.dataset.z = v;
+      b.addEventListener('click', e => { e.stopPropagation(); setZoom(v); });
+      box.appendChild(b);
+    });
+    markZoom();
+  }
+  function setZoom(v) {
+    const zr = $('zoom');
+    v = Math.min(+zr.max, Math.max(+zr.min, v));
+    zr.value = v; zr.dispatchEvent(new Event('input'));
+  }
+  function markZoom() {
+    const z = +$('zoom').value;
+    let act = zPresets[0];
+    zPresets.forEach(v => { if (z >= v - 0.05) act = v; });
+    document.querySelectorAll('#zoomPills button').forEach(b => {
+      const v = +b.dataset.z, on = v === act;
+      b.classList.toggle('on', on);
+      b.textContent = on ? fmtZ(z) + 'x' : fmtZ(v);
+    });
+  }
+  var pinch = null, justPinched = false;
+  $('frame').addEventListener('touchstart', e => {
+    if (e.touches.length === 2 && mode === 'live') {
+      const [a, b] = e.touches;
+      pinch = { d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), z: +$('zoom').value };
+    }
+  }, { passive: true });
+  $('frame').addEventListener('touchmove', e => {
+    if (!pinch || e.touches.length !== 2) return;
+    const [a, b] = e.touches;
+    const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    setZoom(pinch.z * d / pinch.d);
+    justPinched = true;
+  }, { passive: true });
+  $('frame').addEventListener('touchend', e => {
+    if (e.touches.length < 2) pinch = null;
+    if (justPinched) setTimeout(() => { justPinched = false; }, 350);
+  });
+
+  // ---- Hoja de ajustes (⋯) ----
+  $('moreBtn').addEventListener('click', e => { e.stopPropagation(); $('sheet').classList.remove('hidden'); });
+  $('sheetClose').addEventListener('click', e => { e.stopPropagation(); $('sheet').classList.add('hidden'); });
+  $('sheet').addEventListener('click', e => { e.stopPropagation(); if (e.target === $('sheet')) $('sheet').classList.add('hidden'); });
+  $('hideAll').addEventListener('click', e => { e.stopPropagation(); $('sheet').classList.add('hidden'); toggleUi(); });
 
   $('freeze').addEventListener('click', e => {
     e.stopPropagation();
@@ -557,6 +715,7 @@
     $('timerBadge').textContent = timerSecs + 's';
     $('timerBadge').classList.toggle('hidden', !timerSecs);
     $('timer').classList.toggle('on', !!timerSecs);
+    $('timerLbl').textContent = timerSecs ? timerSecs + ' s' : 'No';
   });
 
   const wait = ms => new Promise(r => setTimeout(r, ms));
@@ -700,7 +859,8 @@
 
   function updateGalBtn() {
     const n = shots.length;
-    $('galBtn').classList.toggle('hidden', n === 0);
+    $('galBtn').classList.toggle('empty', n === 0);
+    $('galCount').classList.toggle('hidden', n === 0);
     if (n) { $('galThumb').src = shots[n - 1].url; $('galCount').textContent = n; }
   }
   $('galBtn').addEventListener('click', e => { e.stopPropagation(); if (shots.length) openViewer(shots.length - 1); });
@@ -971,18 +1131,19 @@
       track.applyConstraints({ advanced: [{ zoom: parseFloat($('zoom').value) }] }).catch(() => {});
     }
     applyTransform();
+    markZoom();
   });
   ui.addEventListener('click', e => e.stopPropagation());
 
   function toggleUi() {
-    ui.classList.toggle('faded');
-    const f = ui.classList.contains('faded');
-    ['fullTop', 'switchCam', 'gridBtn', 'ratioBtn', 'galBtn'].forEach(id => $(id).classList.toggle('faded', f));
-    $('hideBtn').classList.toggle('on', f);
+    const f = !ui.classList.contains('faded');
+    ui.classList.toggle('faded', f);
+    $('topbar').classList.toggle('faded', f);
+    $('hideBtn').classList.toggle('hidden', !f);
   }
   // Tocar la imagen: enfoca y mide la luz ahí (si la cámara lo permite); si no, oculta/muestra controles
   $('frame').addEventListener('click', e => {
-    if (!$('start').classList.contains('hidden')) return;
+    if (!$('start').classList.contains('hidden') || justPinched) return;
     if (mode === 'live' && !frozen && focusOk && track) tapFocus(e.clientX, e.clientY);
     else toggleUi();
   });
