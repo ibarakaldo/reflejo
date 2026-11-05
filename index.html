@@ -223,6 +223,33 @@
   .info-list span { font-size: 13px; color: #a8adb8; }
   #topbar #gridBtn, #topbar #ratioBtn, #topbar #light, #topbar #moreBtn { position: relative; top: auto; right: auto; left: auto; }
   .sh-grid #fullTop { position: static; top: auto; right: auto; width: auto; height: auto; z-index: auto; }
+
+  /* ===== Horizontal: controles en columna a la derecha ===== */
+  @media (orientation: landscape) and (max-height: 600px) {
+    #ui { left: auto; right: 0; top: 0; bottom: 0; width: 132px; justify-content: center; gap: 14px;
+      padding: 10px calc(10px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) 10px;
+      background: linear-gradient(to left, rgba(0,0,0,.72) 62%, rgba(0,0,0,0)); }
+    #ui .row { grid-template-columns: 1fr; justify-items: center; gap: 16px; padding: 0; }
+    #galBtn, #switchCam { justify-self: center; }
+    #galBtn, #switchCam { width: 46px; height: 46px; }
+    .shutter { width: 68px; height: 68px; }
+    #modes { flex-direction: column; align-items: center; gap: 2px; }
+    #modes button { padding: 4px 2px; font-size: 13px; }
+    #zoomPills { position: absolute; right: 100%; bottom: 12px; width: calc(100vw - 132px); min-height: 0; }
+    #panel { position: absolute; right: 100%; bottom: 62px; width: calc(100vw - 152px); margin-right: 10px; }
+    #topbar { right: 132px; padding-top: calc(8px + env(safe-area-inset-top)); padding-left: calc(16px + env(safe-area-inset-left)); }
+    #hint { top: 60px; left: calc(50% - 66px); }
+    .sheet-card { max-height: 100%; overflow-y: auto; gap: 10px; padding-top: 10px; }
+    .sh-grid { grid-template-columns: repeat(3, 1fr); }
+    #preview img { min-height: 120px; }
+    .vhead { padding-top: calc(6px + env(safe-area-inset-top)); padding-bottom: 2px; }
+    #preview .bar { padding-top: 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+    #saved { min-height: 0; padding-top: 4px; }
+    #start { gap: 12px; }
+    #start .logo { width: 72px; height: 72px; }
+    #start > h1 { font-size: 26px; }
+    #start > p { max-width: 560px; }
+  }
 </style>
 </head>
 <body>
@@ -326,7 +353,7 @@
 <circle cx="88" cy="82" r="5" fill="#1b2a4a"/>
 <circle cx="112" cy="82" r="5" fill="#e9eef7"/>
 <path d="M86 102 Q100 112 100 112" stroke="#1b2a4a" stroke-width="3" fill="none" stroke-linecap="round"/>
-<path d="M100 112 Q114 102 114 102" stroke="#e9eef7" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg><div><b>Reflejo</b><span>Versión 9 · noviembre 2026</span></div></div>
+<path d="M100 112 Q114 102 114 102" stroke="#e9eef7" stroke-width="3" fill="none" stroke-linecap="round"/></g></svg><div><b>Reflejo</b><span>Versión 10 · noviembre 2026</span></div></div>
         <h3>Cómo se usa</h3>
         <ul class="info-list">
           <li><b>Tocar la imagen</b><span>Enfoca y mide la luz en ese punto</span></li>
